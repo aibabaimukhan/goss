@@ -35,25 +35,7 @@
     </div>
 
     <script>
-         const blockTime = 5 * 60 * 1000; // 5 минут в миллисекундах
-
-        // Проверка, был ли пользователь недавно на сайте
-        const lastVisit = localStorage.getItem("lastVisit");
-        if (lastVisit && Date.now() - lastVisit < blockTime) {
-            document.body.innerHTML = "<h2>Доступ временно заблокирован. Попробуйте позже.</h2>";
-        } else {
-            // Устанавливаем время входа
-            localStorage.setItem("lastVisit", Date.now());
-
-            // Отключаем контекстное меню
-            document.addEventListener("contextmenu", (event) => event.preventDefault());
-
-            // Отключаем выделение и копирование на iPhone и Android (долгий тап)
-            document.addEventListener("touchstart", (event) => {
-                if (event.touches.length > 1) {
-                    event.preventDefault();
-                }
-            }, { passive: false });
+         
 
             // Блокировка клавиш (Ctrl+C, F12 и т. д.)
             document.addEventListener("keydown", (event) => {
