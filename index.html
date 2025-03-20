@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="style.css"> -->
     <style>
        body {
-            user-select: none; /* Блокировка выделения текста */
-            -webkit-user-select: none; /* Для iPhone */
+            user-select: none; 
+            -webkit-user-select: none; 
             -moz-user-select: none;
             -ms-user-select: none;
             font-family: Arial, sans-serif;
@@ -15,53 +14,72 @@
             margin-top: 50px;
         }
         
-        /* Запрещаем перетаскивание элементов */
+       
         img, a, p, h1, div {
             pointer-events: none;
-            -webkit-touch-callout: none; /* Запрещает всплывающее меню на iPhone */
+            -webkit-touch-callout: none;
+        }
+
+        header{
+            margin-top: 0;
+            width: 100%;
+            height: 10vh;
+            background: #15636d;
+            color: rgb(0, 0, 0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+        }
+        h3, p{
+            border-radius: 6px;
+            background: #ffffff;
+            box-shadow:  10px 10px 20px #bebebe,
+                        -10px -10px 20px #ffffff;
         }
     </style>
     <title>Document</title>
 </head>
 <body>
-    <header></header>
+    <header>Мой сайт</header>
     <div>
         <h3>
             Совместный приказ Министра энергетики Республики Казахстан от 23 января 2025 года № 36-н/қ, Председателя Комитета национальной безопасности Республики Казахстан от 23 января 2025 года № 52қа/қе, Министра финансов Республики Казахстан от 23 января 2025 года № 41 и и.о. Министра внутренних дел Республики Казахстан от 23 января 2025 года № 55
             О внесении изменения в Совместный приказ Министра энергетики Республики Казахстан от 8 октября 2024 года № 359, Председателя Комитета национальной безопасности Республики Казахстан от 8 октября 2024 года № 855/қе-қа, Министра финансов Республики Казахстан от 8 октября 2024 года № 680, Министра внутренних дел Республики Казахстан от 8 октября 2024 № 747 «О некоторых вопросах вывоза нефтепродуктов с территории Республики Казахстан»
-
- 
         </h3>
+        <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam unde repudiandae odio totam numquam accusamus vitae minus. Sequi, assumenda, facilis quos eligendi rem dolor cumque, dolore velit placeat harum dignissimos corrupti. Consectetur, atque aliquam deleniti quaerat placeat ipsa laboriosam fugit culpa architecto, iure eligendi laudantium quasi quia expedita temporibus corrupti aut perferendis similique incidunt distinctio accusantium assumenda voluptatem? Illum vero, eveniet repudiandae nulla quod rerum, voluptatibus nam soluta repellendus rem amet dicta id. Nulla delectus tempore officia odio nobis ipsum molestiae ad repudiandae, quod nihil accusantium tempora voluptatem quae molestias. Hic omnis amet ut provident reprehenderit? Laudantium hic optio sint.
+        </p>
     </div>
 
     <script>
-         const blockTime = 5 * 60 * 1000; // 5 минут в миллисекундах
+         const blockTime = 5 * 60 * 1000; 
 
-        // Проверка, был ли пользователь недавно на сайте
+ 
         const lastVisit = localStorage.getItem("lastVisit");
         if (lastVisit && Date.now() - lastVisit < blockTime) {
             document.body.innerHTML = "<h2>Доступ временно заблокирован. Попробуйте позже.</h2>";
         } else {
-            // Устанавливаем время входа
+
             localStorage.setItem("lastVisit", Date.now());
 
-            // Отключаем контекстное меню
+
             document.addEventListener("contextmenu", (event) => event.preventDefault());
 
-            // Отключаем выделение и копирование на iPhone и Android (долгий тап)
+
             document.addEventListener("touchstart", (event) => {
                 if (event.touches.length > 1) {
                     event.preventDefault();
                 }
             }, { passive: false });
 
-            // Блокировка клавиш (Ctrl+C, F12 и т. д.)
+
             document.addEventListener("keydown", (event) => {
                 if (event.ctrlKey && ["c", "u", "s"].includes(event.key)) event.preventDefault();
                 if (event.key === "F12") event.preventDefault();
             });
 
-            // Автоматический выход через 10 секунд
+
             setTimeout(() => {
                 alert("Ваше время на сайте истекло!");
                 window.location.href = "about:blank";
