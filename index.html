@@ -13,7 +13,7 @@
             text-align: center;
             margin-top: 50px;
             background: rgb(255,255,255);
-background: linear-gradient(129deg, rgba(255,255,255,1) 0%, rgba(126,215,252,0.8071603641456583) 100%);
+            background: linear-gradient(129deg, rgba(255,255,255,1) 0%, rgba(126,215,252,0.8071603641456583) 100%);
         }
         
        
@@ -184,43 +184,62 @@ background: linear-gradient(129deg, rgba(255,255,255,1) 0%, rgba(126,215,252,0.8
         </div>
         <div class="btn">
             <a href="https://google.com">Доступ к документам и консультации от ведущих специалистов</a>
-            <a href="https://google.com">Вы можете купить этот документ</a>
+            <a href="https://google.com">Обратная связь</a>
         </div>
 </div>
 
     <script>
-         const blockTime = 5 * 60 * 1000; 
+       const blockTime = 1000;
 
- 
-        const lastVisit = localStorage.getItem("lastVisit");
-        if (lastVisit && Date.now() - lastVisit < blockTime) {
-            document.body.innerHTML = "<h2>Доступ временно заблокирован. Попробуйте позже.</h2>";
-        } else {
+const lastVisit = localStorage.getItem("lastVisit");
+if (lastVisit && Date.now() - lastVisit < blockTime) {
+    document.body.innerHTML = "<h2>Доступ временно заблокирован. Попробуйте позже.</h2>";
+} else {
+    // Устанавливаем время входа
+    localStorage.setItem("lastVisit", Date.now());
 
-            localStorage.setItem("lastVisit", Date.now());
+    // Отключаем контекстное меню
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
 
+    // Запрещаем жесты увеличения/выделения текста на тач-устройствах
+    document.addEventListener("touchstart", (event) => {
+        if (event.touches.length > 1) {
+            event.preventDefault();
+        }
+    }, { passive: false });
 
-            document.addEventListener("contextmenu", (event) => event.preventDefault());
+    // Блокировка клавиш (Ctrl+S, Ctrl+U, Ctrl+C, F12 и т. д.)
+    document.addEventListener("keydown", (event) => {
+        if (
+            (event.ctrlKey || event.metaKey) && 
+            ["s", "c", "u", "p"].includes(event.key.toLowerCase()) // Добавил "p" (Ctrl+P — печать)
+        ) {
+            event.preventDefault();
+            alert("Действие заблокировано!");
+            return false;
+        }
+        if (event.key === "F12") {
+            event.preventDefault();
+            return false;
+        }
+    });
 
+    // Блокировка сохранения через `beforeunload`
+    window.addEventListener("beforeunload", (event) => {
+        event.preventDefault();
+        event.returnValue = "";
+    });
 
-            document.addEventListener("touchstart", (event) => {
-                if (event.touches.length > 1) {
-                    event.preventDefault();
-                }
-            }, { passive: false });
-
-
-            document.addEventListener("keydown", (event) => {
-                if (event.ctrlKey && ["c", "u", "s"].includes(event.key)) event.preventDefault();
-                if (event.key === "F12") event.preventDefault();
-            });
-
-
-            setTimeout(() => {
-                alert("Ваше время на сайте истекло!");
-                window.location.href = "about:blank";
-            }, 10000);
+    // Автоматический выход через 120 секунд (2 минуты)
+    setTimeout(() => {
+        alert("Ваше время на сайте истекло!");
+        window.location.href = "about:blank";
+    }, 120000);
 }
+
+
+
+
     </script>
 </body>
 </html>
