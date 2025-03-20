@@ -183,13 +183,12 @@
 </div>
 
     <script>
-       const blockTime = 1000;
+     const blockTime = 1000;
 
 const lastVisit = localStorage.getItem("lastVisit");
 if (lastVisit && Date.now() - lastVisit < blockTime) {
     document.body.innerHTML = "<h2>Доступ временно заблокирован. Попробуйте позже.</h2>";
 } else {
-    // Устанавливаем время входа
     localStorage.setItem("lastVisit", Date.now());
 
     // Отключаем контекстное меню
@@ -202,34 +201,60 @@ if (lastVisit && Date.now() - lastVisit < blockTime) {
         }
     }, { passive: false });
 
-    // Блокировка клавиш (Ctrl+S, Ctrl+U, Ctrl+C, F12 и т. д.)
-    document.addEventListener("keydown", (event) => {
-        if (
-            (event.ctrlKey || event.metaKey) && 
-            ["s", "c", "u", "p"].includes(event.key.toLowerCase()) // Добавил "p" (Ctrl+P — печать)
-        ) {
-            event.preventDefault();
-            alert("Действие заблокировано!");
-            return false;
-        }
-        if (event.key === "F12") {
-            event.preventDefault();
-            return false;
-        }
-    });
-
-    // Блокировка сохранения через `beforeunload`
-    window.addEventListener("beforeunload", (event) => {
+  // Блокируем клавиши (Ctrl+S, Ctrl+U, Ctrl+C, Ctrl+P, F12)
+document.addEventListener("keydown", (event) => {
+    const forbiddenKeys = ["s", "c", "u", "p"];
+    
+    if ((event.ctrlKey || event.metaKey) && forbiddenKeys.includes(event.key.toLowerCase())) {
         event.preventDefault();
-        event.returnValue = "";
+        window.location.href = "about:blank";
+    }
+
+    if (event.key === "F12") {
+        event.preventDefault();
+        window.location.href = "about:blank";
+    }
+});
+
+
+// Блокируем кнопку "Назад"
+history.pushState(null, null, window.location.href);
+window.addEventListener("popstate", function () {
+    history.pushState(null, null, window.location.href);
+});
+
+
+
+    // Очистка данных при закрытии окна (без подтверждения)
+    window.addEventListener("unload", () => {
+        clearData();
     });
 
     // Автоматический выход через 120 секунд (2 минуты)
     setTimeout(() => {
-        alert("Ваше время на сайте истекло!");
-        window.location.href = "about:blank";
-    }, 120000);
+    window.location.href = "about:blank"; // Перенаправляет на пустую страницу
+}, 10000);
+
 }
+
+document.addEventListener("keydown", function(event) {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        window.location.href = "about:blank"; // Перенаправление без алерта
+    }
+});
+
+
+// Функция очистки данных
+function clearData() {
+    localStorage.clear();  
+    sessionStorage.clear(); 
+    document.cookie.split(";").forEach((cookie) => {
+        document.cookie = cookie.replace(/^ +/, "").replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/");
+    });
+}
+
+
 
 
     </script>
