@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        body{
+            margin: 0;padding: 0;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+        }
+        div{
+            text-align: center;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <header></header>
+    <div>
+        <h3>
+            Совместный приказ Министра энергетики Республики Казахстан от 23 января 2025 года № 36-н/қ, Председателя Комитета национальной безопасности Республики Казахстан от 23 января 2025 года № 52қа/қе, Министра финансов Республики Казахстан от 23 января 2025 года № 41 и и.о. Министра внутренних дел Республики Казахстан от 23 января 2025 года № 55
+            О внесении изменения в Совместный приказ Министра энергетики Республики Казахстан от 8 октября 2024 года № 359, Председателя Комитета национальной безопасности Республики Казахстан от 8 октября 2024 года № 855/қе-қа, Министра финансов Республики Казахстан от 8 октября 2024 года № 680, Министра внутренних дел Республики Казахстан от 8 октября 2024 № 747 «О некоторых вопросах вывоза нефтепродуктов с территории Республики Казахстан»
+
+ 
+        </h3>
+    </div>
+
+    <script>
+        document.addEventListener("contextmenu", (event) => event.preventDefault());
+        document.addEventListener("keydown", (event) => {
+        if (event.ctrlKey && (event.key === "c" || event.key === "u" || event.key === "s")) {
+            event.preventDefault();
+        }
+        if (event.key === "F12") {
+            event.preventDefault();
+        }
+        });
+
+        setTimeout(() => {
+            alert("Ваше время на сайте истекло!");
+            window.location.href = "https://google.com"; // Перенаправление на пустую страницу
+        }, 5000);
+    </script>
+</body>
+</html>
