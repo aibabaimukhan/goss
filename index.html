@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="style.css"> -->
     <style>
         body{
             margin: 0;padding: 0;
@@ -29,6 +28,16 @@
     </div>
 
     <script>
+        const blockTime = 5 * 60 * 1000; // 5 минут в миллисекундах
+
+        // Проверка, был ли пользователь недавно на сайте
+        const lastVisit = localStorage.getItem("lastVisit");
+        if (lastVisit && Date.now() - lastVisit < blockTime) {
+            document.body.innerHTML = "<h2>Доступ временно заблокирован. Попробуйте позже.</h2>";
+        } else {
+            // Устанавливаем время входа
+            localStorage.setItem("lastVisit", Date.now());
+        
         document.addEventListener("contextmenu", (event) => event.preventDefault());
         document.addEventListener("keydown", (event) => {
         if (event.ctrlKey && (event.key === "c" || event.key === "u" || event.key === "s")) {
