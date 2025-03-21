@@ -23,6 +23,24 @@
         }
 
         header{
+            width: 100%;
+            height: 10vh;
+            /* border: 1px solid red; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url(https://s.zakon.kz/Images/Paragraph/paragraph-logo.svg);
+            background-size: 30px;
+            background-repeat: no-repeat;
+            background-position: 45% 50%;
+            margin-bottom: 15px;
+            -webkit-box-shadow: 10px 10px 39px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 10px 10px 39px 0px rgba(0,0,0,0.75);
+            box-shadow: 10px 10px 39px 0px rgba(0,0,0,0.75);
+            border-radius: 5px;
+            font-size: 20px;
+        }
+        .header{
             margin-top: 0;
             width: 100%;
             height: 20vh;
@@ -131,6 +149,9 @@
     <title>Document</title>
 </head>
 <body>
+    <header>
+        ПАРАГРАФ
+    </header>
     <div class="panel">
         <a href="#"></a>
         <a href="#"></a>
@@ -138,9 +159,9 @@
         <a href="#"></a>
         <a href="#"></a>
     </div>
-    <header>
+    <div class="header">
         <img src="img/111.png" alt="Ошибка отображении картинки(обновите Ваш браузер)">
-    </header>
+    </div>
     <div>
         <h3>
             СОВМЕСТНЫЙ ПРИКАЗ
@@ -183,12 +204,14 @@
 </div>
 
     <script>
-     const blockTime = 120000;
-
+    const blockTime = 10000; // Время блокировки (10 секунд)
 const lastVisit = localStorage.getItem("lastVisit");
+
 if (lastVisit && Date.now() - lastVisit < blockTime) {
+    // Если прошло меньше blockTime, показываем сообщение о блокировке
     document.body.innerHTML = "<h2>Доступ временно заблокирован. Попробуйте позже.</h2>";
 } else {
+    // Устанавливаем время входа (не обновляем, если вход запрещен)
     localStorage.setItem("lastVisit", Date.now());
 
     // Отключаем контекстное меню
@@ -201,65 +224,29 @@ if (lastVisit && Date.now() - lastVisit < blockTime) {
         }
     }, { passive: false });
 
-  // Блокируем клавиши (Ctrl+S, Ctrl+U, Ctrl+C, Ctrl+P, F12)
-  document.addEventListener("keydown", (event) => {
-    if (event.ctrlKey || event.metaKey) {
-        switch (event.code) {
-            case "KeyS": // Ctrl + S
-            case "KeyC": // Ctrl + C
-            case "KeyU": // Ctrl + U
-            case "KeyP": // Ctrl + P
-                event.preventDefault();
-                window.location.href = "about:blank";
-                break;
+    // Блокировка клавиш (Ctrl+S, Ctrl+P, Ctrl+U, Ctrl+C, F12 и т. д.)
+    document.addEventListener("keydown", (event) => {
+        if (
+            (event.ctrlKey || event.metaKey) && 
+            ["s", "p", "u", "c"].includes(event.key.toLowerCase()) // Ctrl+S, Ctrl+P, Ctrl+U, Ctrl+C
+        ) {
+            event.preventDefault();
+            return false;
         }
-    }
-
-    if (event.code === "F12") {
-        event.preventDefault();
-        window.location.href = "about:blank";
-    }
-});
-
-
-
-
-// Блокируем кнопку "Назад"
-history.pushState(null, null, window.location.href);
-window.addEventListener("popstate", function () {
-    history.pushState(null, null, window.location.href);
-});
-
-
-
-    // Очистка данных при закрытии окна (без подтверждения)
-    window.addEventListener("unload", () => {
-        clearData();
+        if (["F12", "PrintScreen"].includes(event.key)) { // Блокируем F12 и PrintScreen
+            event.preventDefault();
+            return false;
+        }
     });
 
     // Автоматический выход через 120 секунд (2 минуты)
     setTimeout(() => {
-    window.location.href = "about:blank"; // Перенаправляет на пустую страницу
-}, 120000);
-
+        localStorage.setItem("lastVisit", Date.now()); // Запоминаем время выхода
+        window.location.href = "blocked.html"; // Перенаправление на страницу блокировки
+    }, 10000);
 }
 
-document.addEventListener("keydown", function(event) {
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
-        event.preventDefault();
-        window.location.href = "about:blank"; // Перенаправление без алерта
-    }
-});
 
-
-// Функция очистки данных
-function clearData() {
-    localStorage.clear();  
-    sessionStorage.clear(); 
-    document.cookie.split(";").forEach((cookie) => {
-        document.cookie = cookie.replace(/^ +/, "").replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/");
-    });
-}
 
 
 
