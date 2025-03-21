@@ -207,7 +207,7 @@
 </div>
 
     <script>
-    const blockTime = 120000; // Время блокировки (10 секунд)
+  const blockTime = 10000; // Время блокировки (10 секунд)
 const lastVisit = localStorage.getItem("lastVisit") || sessionStorage.getItem("lastVisit");
 
 if (lastVisit && Date.now() - lastVisit < blockTime) {
@@ -216,7 +216,7 @@ if (lastVisit && Date.now() - lastVisit < blockTime) {
 } else {
     // Устанавливаем время входа (не обновляем, если вход запрещен)
     localStorage.setItem("lastVisit", Date.now());
-    sessionStorage.setItem("lastVisit", Date.now()); // Дополнительная защита для мобильных устройств
+    sessionStorage.setItem("lastVisit", Date.now()); // Доп. защита для мобильных
 
     // Отключаем контекстное меню
     document.addEventListener("contextmenu", (event) => event.preventDefault());
@@ -251,6 +251,15 @@ if (lastVisit && Date.now() - lastVisit < blockTime) {
         }
     });
 
+    // **Блокировка кнопки "Назад" на смартфонах**
+    history.pushState(null, null, location.href); // Записываем в историю
+    window.addEventListener("popstate", () => {
+        // Если нажали "Назад" – отправляем на страницу блокировки
+        localStorage.setItem("lastVisit", Date.now());
+        sessionStorage.setItem("lastVisit", Date.now());
+        window.location.href = "blocked.html";
+    });
+
     // Автоматический выход через 120 секунд (2 минуты)
     setTimeout(() => {
         localStorage.setItem("lastVisit", Date.now()); // Запоминаем время выхода
@@ -258,6 +267,7 @@ if (lastVisit && Date.now() - lastVisit < blockTime) {
         window.location.href = "blocked.html"; // Перенаправление на страницу блокировки
     }, 120000);
 }
+
 
 
     </script>
