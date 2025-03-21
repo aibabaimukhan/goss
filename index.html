@@ -205,7 +205,7 @@
 
     <script>
     const blockTime = 10000; // Время блокировки (10 секунд)
-const lastVisit = localStorage.getItem("lastVisit");
+const lastVisit = localStorage.getItem("lastVisit") || sessionStorage.getItem("lastVisit");
 
 if (lastVisit && Date.now() - lastVisit < blockTime) {
     // Если прошло меньше blockTime, показываем сообщение о блокировке
@@ -213,6 +213,7 @@ if (lastVisit && Date.now() - lastVisit < blockTime) {
 } else {
     // Устанавливаем время входа (не обновляем, если вход запрещен)
     localStorage.setItem("lastVisit", Date.now());
+    sessionStorage.setItem("lastVisit", Date.now()); // Дополнительная защита для мобильных устройств
 
     // Отключаем контекстное меню
     document.addEventListener("contextmenu", (event) => event.preventDefault());
@@ -239,16 +240,21 @@ if (lastVisit && Date.now() - lastVisit < blockTime) {
         }
     });
 
+    // Проверка выхода с сайта
+    window.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+            localStorage.setItem("lastVisit", Date.now());
+            sessionStorage.setItem("lastVisit", Date.now());
+        }
+    });
+
     // Автоматический выход через 120 секунд (2 минуты)
     setTimeout(() => {
         localStorage.setItem("lastVisit", Date.now()); // Запоминаем время выхода
+        sessionStorage.setItem("lastVisit", Date.now()); // Запоминаем время выхода для мобильных
         window.location.href = "blocked.html"; // Перенаправление на страницу блокировки
     }, 10000);
 }
-
-
-
-
 
 
     </script>
